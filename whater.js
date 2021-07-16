@@ -1,9 +1,9 @@
 let LivingCreature  = require("./livingcreature.js")
 
-module.exports = class Preditor extends LivingCreature {
+module.exports = class Whater extends LivingCreature {
     constructor(x, y) {
         super(x, y)
-        this.energy = 8;
+        this.energy = 10;
         this.multiply = 0;
     }
 
@@ -22,22 +22,26 @@ module.exports = class Preditor extends LivingCreature {
             [this.x, this.y + 1],
             [this.x + 1, this.y + 1]
         ];
+        
     }
 
     mul() {
         this.multiply++;
+        
         var emptyCells = this.chooseCell(0);
         var newCell = emptyCells[ Math.floor(Math.random() * emptyCells.length) ] ;
 
-        if (newCell && this.multiply >= 2 && this.energy>16) {
+        if (newCell && this.multiply >= 3) {
             var newX = newCell[0];
             var newY = newCell[1];
-            matrix[newY][newX] = 3;
+            matrix[newY][newX] = 6;
+            console.log(matrix);
+            
 
-            var newPredator = new Preditor(newX, newY);
-            predatorArr.push(newPredator);
+            var newWhater = new Whater(newX, newY);
+            WhaterArr.push(newWhater);
+            console.log(WhaterArr);
             this.multiply = 0;
-            this.energy = 8
         }
     }
     move() {
@@ -50,6 +54,8 @@ module.exports = class Preditor extends LivingCreature {
             var newY = newCell[1]
             matrix[newY][newX] = matrix[this.y][this.x]
             matrix[this.y][this.x] = 0
+
+            
             this.x = newX
             this.y = newY
         }
@@ -61,7 +67,7 @@ module.exports = class Preditor extends LivingCreature {
     }
 
     eat() {
-        var emptyCells = this.chooseCell(2)
+        var emptyCells = this.chooseCell(4)
         var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
 
         if (newCell) {
@@ -73,10 +79,10 @@ module.exports = class Preditor extends LivingCreature {
             matrix[this.y][this.x] = 0
             this.x = newX
             this.y = newY
-            for (var i in grassEaterArr) {
-                if (this.x == grassEaterArr[i].x && this.y == grassEaterArr[i].y) {
+            for (var i in fireArr) {
+                if (this.x == fireArr[i].x && this.y == fireArr[i].y) {
 
-                    grassEaterArr.splice(i, 1);
+                    fireArr.splice(i, 1);
                     break;
                 }
             }
@@ -88,9 +94,9 @@ module.exports = class Preditor extends LivingCreature {
 
     die() {
         matrix[this.y][this.x] = 0;
-        for (var i in predatorArr) {
-            if (this.x == predatorArr[i].x && this.y == predatorArr[i].y) {
-                predatorArr.splice(i, 1);
+        for (var i in WhaterArr) {
+            if (this.x == WhaterArr[i].x && this.y == WhaterArr[i].y) {
+                WhaterArr.splice(i, 1);
                 break;
             }
         }
